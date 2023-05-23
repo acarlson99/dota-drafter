@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2023-05-23 Tue 10:18 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DDML dota draft machine learning</title>
+<meta name="generator" content="Org mode">
+<meta name="author" content="cummy-dota-boy">
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<style>body{background-color:#313338;color:#b8b6b4;}a{color:#1768AC;}table,th,td{border:1px solid grey;border-collapse:collapse;}</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">DDML dota draft machine learning</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org29f89e1">1. idea</a></li>
+<li><a href="#org0894525">2. training methods</a>
+<ul>
+<li><a href="#org0df4b46">2.1. recommendation algorithm</a>
+<ul>
+<li><a href="#orged858b5">2.1.1. Pros</a></li>
+<li><a href="#org59acb70">2.1.2. Cons</a></li>
+</ul>
+</li>
+<li><a href="#orgb83bf67">2.2. vector analysis</a>
+<ul>
+<li><a href="#org544f131">2.2.1. Gensim</a></li>
+<li><a href="#org6d022f5">2.2.2. Feature Extraction</a></li>
+<li><a href="#orga9845ee">2.2.3. Links</a></li>
+<li><a href="#org0610184">2.2.4. Keywords</a></li>
+<li><a href="#org574d115">2.2.5. Pros</a></li>
+<li><a href="#orge1ebb60">2.2.6. Cons</a></li>
+</ul>
+</li>
+<li><a href="#org62ca23d">2.3. LLM Method</a>
+<ul>
+<li><a href="#org8200169">2.3.1. CBOW</a></li>
+<li><a href="#org67bba6c">2.3.2. Links</a></li>
+<li><a href="#org0226597">2.3.3. Keywords</a></li>
+<li><a href="#org8ae0efb">2.3.4. Pros</a></li>
+<li><a href="#org4372090">2.3.5. Cons</a></li>
+</ul>
+</li>
+<li><a href="#orgf30e574">2.4. Prompt engineering</a></li>
+</ul>
+</li>
+<li><a href="#org4e6f85c">3. data tricks</a>
+<ul>
+<li><a href="#org8e1b69f">3.1. Negative sampling</a></li>
+<li><a href="#orgcfd957a">3.2. multi-sampling games</a>
+<ul>
+<li><a href="#orgb887932">3.2.1. Pros</a></li>
+<li><a href="#orgf16702c">3.2.2. Cons</a></li>
+</ul>
+</li>
+<li><a href="#org76fd390">3.3. opendota</a>
+<ul>
+<li><a href="#org3e0eea6">3.3.1. Links</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org6883836">4. model model</a>
+<ul>
+<li><a href="#org5d80001">4.1. predict draft</a></li>
+<li><a href="#org3123c8e">4.2. predict pick</a></li>
+<li><a href="#org79b7616">4.3. RNN</a></li>
+</ul>
+</li>
+<li><a href="#org21391d0">5. Random links</a></li>
+<li><a href="#orge37cdde">6. Citations</a>
+<ul>
+<li><a href="#orgdd267d0">6.1. Defense of the Ancients DOTA 2 Draft Recommendation System</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org29f89e1" class="outline-2">
+<h2 id="org29f89e1"><span class="section-number-2">1</span> idea</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+I would like to be able to determine the best next pick in a dota draft.
+</p>
+
+<p>
+Given a draft up to a point&#x2013; say Radiant has picked Mirana and Ogre and Dire has picked Rubick and Pudge&#x2013; what is the best next pick?
+</p>
+
+<p>
+Perhaps Slark is strong because he can jump Rubick and dispell Pudge's ultimate.  Maybe there is a better pick.  Perhaps the team you are playing has won every game vs Slark?
+</p>
+
+<p>
+It would also be great to discern builds and strategies during the draft phase.  Suppose you are playing into Mirana, Ogre Magi, and Slark.  Force Staff is almost mandatory, but when should I buy this?  Is it better to buy Force Staff first, or should you get more lane sustain like a Sage's Mask, or maybe a Headdress?
+</p>
+
+<p>
+I should be able to answer the question "what is the best next pick and what are my lane matchups" at every stage, and (secondary) "what should my build be"
+</p>
+
+<p>
+The tool should be sensitive to new data and able to refine itself to counter meta-breaking strategies.  It should take into account hero/draft winrates over the course of a tournament.
+</p>
+
+
+<div class="figure">
+<p><img src="https://i.imgur.com/iDZpxsX.png" alt="iDZpxsX.png">
+</p>
+</div>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Phase</th>
+<th scope="col" class="org-left">Radiant</th>
+<th scope="col" class="org-left">Dire</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">ban</td>
+<td class="org-left">bounty hunter</td>
+<td class="org-left">lina</td>
+</tr>
+
+<tr>
+<td class="org-left">ban</td>
+<td class="org-left">lich</td>
+<td class="org-left">muerta</td>
+</tr>
+
+<tr>
+<td class="org-left">pick</td>
+<td class="org-left">mirana</td>
+<td class="org-left">rubick</td>
+</tr>
+
+<tr>
+<td class="org-left">pick</td>
+<td class="org-left">ogre magi</td>
+<td class="org-left">pudge</td>
+</tr>
+
+<tr>
+<td class="org-left">ban</td>
+<td class="org-left">faceless void</td>
+<td class="org-left">ember spirit</td>
+</tr>
+
+<tr>
+<td class="org-left">ban</td>
+<td class="org-left">drow ranger</td>
+<td class="org-left">clinkz</td>
+</tr>
+
+<tr>
+<td class="org-left">ban</td>
+<td class="org-left">troll warlord</td>
+<td class="org-left">ursa</td>
+</tr>
+
+<tr>
+<td class="org-left">pick</td>
+<td class="org-left">slark</td>
+<td class="org-left">weaver</td>
+</tr>
+
+<tr>
+<td class="org-left">pick</td>
+<td class="org-left">slardar</td>
+<td class="org-left">spirit breaker</td>
+</tr>
+
+<tr>
+<td class="org-left">ban</td>
+<td class="org-left">arc warden</td>
+<td class="org-left">shadow fiend</td>
+</tr>
+
+<tr>
+<td class="org-left">ban</td>
+<td class="org-left">queen of pain</td>
+<td class="org-left">necrophos</td>
+</tr>
+
+<tr>
+<td class="org-left">pick</td>
+<td class="org-left">outworld devourer</td>
+<td class="org-left">magnus</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org0894525" class="outline-2">
+<h2 id="org0894525"><span class="section-number-2">2</span> training methods</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org0df4b46" class="outline-3">
+<h3 id="org0df4b46"><span class="section-number-3">2.1</span> recommendation algorithm</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Given choices X and Y and Z what is the best next choice
+</p>
+</div>
+
+<div id="outline-container-orged858b5" class="outline-4">
+<h4 id="orged858b5"><span class="section-number-4">2.1.1</span> Pros</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+This is a mature algorithm with investment from Netflix and Amazon.  Surely there are good papers and resources on this
+</p>
+</div>
+</div>
+
+<div id="outline-container-org59acb70" class="outline-4">
+<h4 id="org59acb70"><span class="section-number-4">2.1.2</span> Cons</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+Most rec. algorithms are geared towards like-things (TV shows, products, books, music) while our algorithm should recommend a diverse set of heroes.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb83bf67" class="outline-3">
+<h3 id="orgb83bf67"><span class="section-number-3">2.2</span> vector analysis</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Think of each character as a vector.  Ideally a team should be comprised of diverse heroes or vectors pointing in different directions.
+</p>
+
+<ul class="org-ul">
+<li>Relevant metrics/dimensions
+<ul class="org-ul">
+<li>stun</li>
+<li>disarm</li>
+<li>healing</li>
+<li>dispell (hard/soft)</li>
+<li>health</li>
+<li>damage mitigation</li>
+<li>spell immunity</li>
+<li>survivability</li>
+<li>farm speed</li>
+<li>power curve (duration of game)</li>
+<li>damage curve (duration of teamfight) <a href="https://www.youtube.com/watch?v=f0JCpxmcm68">https://www.youtube.com/watch?v=f0JCpxmcm68</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="outline-container-org544f131" class="outline-4">
+<h4 id="org544f131"><span class="section-number-4">2.2.1</span> Gensim</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+A popular Python library for creating vector space embeddings commonly used in NLP is <a href="https://pypi.org/project/gensim/">gensim</a>.  We should be able to generate vectors (size=30?) representing hero features with which to represent heroes within our model.
+</p>
+
+<p>
+Likely this would involve creating a "dictionary" of <a href="https://en.wikipedia.org/wiki/One-hot">one-hot encoded</a> dota heroes and training on many "sentences" (dota drafts)
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6d022f5" class="outline-4">
+<h4 id="org6d022f5"><span class="section-number-4">2.2.2</span> Feature Extraction</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<p>
+Lame, boring, outdated; see [<a href="#orgf30e574">prompt engineering</a>]
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga9845ee" class="outline-4">
+<h4 id="orga9845ee"><span class="section-number-4">2.2.3</span> Links</h4>
+<div class="outline-text-4" id="text-2-2-3">
+<p>
+Relevant blog post <a href="https://gilgi.org/blog/dota-hero-embedding/">https://gilgi.org/blog/dota-hero-embedding/</a>
+</p>
+
+<p>
+[<a href="#orgdd267d0">1</a>]
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0610184" class="outline-4">
+<h4 id="org0610184"><span class="section-number-4">2.2.4</span> Keywords</h4>
+<div class="outline-text-4" id="text-2-2-4">
+<p>
+Word2Vec, CBOW, skip-gram
+</p>
+</div>
+</div>
+
+<div id="outline-container-org574d115" class="outline-4">
+<h4 id="org574d115"><span class="section-number-4">2.2.5</span> Pros</h4>
+<div class="outline-text-4" id="text-2-2-5">
+<p>
+Easily represents relations between heroes/items.  This is likely a useful way to represent data regardless of training method.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge1ebb60" class="outline-4">
+<h4 id="orge1ebb60"><span class="section-number-4">2.2.6</span> Cons</h4>
+<div class="outline-text-4" id="text-2-2-6">
+<p>
+This is hard.  A hero is more than the sum of its skills.
+</p>
+
+<p>
+Metrics make this a bit better, but I am frontloading all the work by coming up with metrics by hand.  It would be much better to dynamically generate/"learn" vector dimensions.
+</p>
+
+<p>
+Also vector lengths seem problematic.  Lion has two disables (spike+hex) which is totally different from Pangolier who has multiple little stuns IF he hits the roll, and both of these are different from storm spirit who has a stun (vortex) on a low cooldown.  If Pangolier simply has a different stun magnitude than Lion this is insufficient because the skills are totally different AND the ability to use two different stuns vs a single multi-stunning ability is relevant.  Ideally this should be solved by having non-hardcoded vector dimensions.
+</p>
+
+<p>
+<del>Pango Swashbuckle (multi-hit attack) combined with a Basher (stun on attack) is much more effective than a Basher on Alchemist (though still useful).  The transformation is non-linear.</del>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-text">Pangolier + Basher + Troll Warlord - Pangolier != Troll Warlord
+</pre>
+</div>
+
+<p>
+<del>Heroes+item transformations cannot be accurately represented by the same vector space.</del>
+NOTE: This is NOT an issue; vector embeddings are N-dimensional and there must exist some dimension that represents heroes and items linearly.
+</p>
+
+<p>
+Some heroes may be lane counters, but not lategame counters.  This can also be fixed by increasing dimensions.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org62ca23d" class="outline-3">
+<h3 id="org62ca23d"><span class="section-number-3">2.3</span> LLM Method</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+This could be done by filling in heroes and asking a model "what hero is in this position"
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Phase</th>
+<th scope="col" class="org-left">R</th>
+<th scope="col" class="org-left">D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">ban</td>
+<td class="org-left">bounty</td>
+<td class="org-left">lina</td>
+</tr>
+
+<tr>
+<td class="org-left">ban</td>
+<td class="org-left">lich</td>
+<td class="org-left">muerta</td>
+</tr>
+
+<tr>
+<td class="org-left">pick</td>
+<td class="org-left">XXXX</td>
+<td class="org-left">rubick</td>
+</tr>
+
+<tr>
+<td class="org-left">pick</td>
+<td class="org-left">ogre magi</td>
+<td class="org-left">pudge</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Given the draft until this point, what hero was picked first?
+</p>
+
+<p>
+Perhaps weight by frequency&#x2013; how often the hero is picked&#x2013; and winrate&#x2013; how often does the game end in a win when this hero is chosen.
+</p>
+
+<p>
+Something to keep in mind is pick order and role.  Usually supports pick first, but strange pick orders (like first pick Muerta carry bc it's strong and there are few counterpicks) or flex picks (OG IO carry for example) might introduce complications.
+</p>
+</div>
+
+<div id="outline-container-org8200169" class="outline-4">
+<h4 id="org8200169"><span class="section-number-4">2.3.1</span> CBOW</h4>
+<div class="outline-text-4" id="text-2-3-1">
+
+<div class="figure">
+<p><img src="cbow.png" alt="cbow.png">
+</p>
+</div>
+
+<p>
+NOTE: this visualization does not incorperate bans, but could easily be modified to do so.  Not all dota games use the same ban order, but they DO all have the same pick order, so focusing on picks increases our usable data set.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org67bba6c" class="outline-4">
+<h4 id="org67bba6c"><span class="section-number-4">2.3.2</span> Links</h4>
+<div class="outline-text-4" id="text-2-3-2">
+<p>
+[<a href="#orgdd267d0">1</a>]
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0226597" class="outline-4">
+<h4 id="org0226597"><span class="section-number-4">2.3.3</span> Keywords</h4>
+<div class="outline-text-4" id="text-2-3-3">
+<p>
+CBOW (continuous bag of words), skip-gram, RNN (recurrent neural network), LSTM (long short-term memory)
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8ae0efb" class="outline-4">
+<h4 id="org8ae0efb"><span class="section-number-4">2.3.4</span> Pros</h4>
+<div class="outline-text-4" id="text-2-3-4">
+<p>
+Easy, similar to current LLM techniques
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4372090" class="outline-4">
+<h4 id="org4372090"><span class="section-number-4">2.3.5</span> Cons</h4>
+<div class="outline-text-4" id="text-2-3-5">
+<p>
+The problem with this approach is that it will ONLY predict the most commonly picked hero, not the optimal hero.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf30e574" class="outline-3">
+<h3 id="orgf30e574"><span class="section-number-3">2.4</span> Prompt engineering</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Encode -&gt; generate prompt (few-shot?) based on hero/item encodings -&gt; GPT -&gt; profit??
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4e6f85c" class="outline-2">
+<h2 id="org4e6f85c"><span class="section-number-2">3</span> data tricks</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org8e1b69f" class="outline-3">
+<h3 id="org8e1b69f"><span class="section-number-3">3.1</span> Negative sampling</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+This can be used to select 2-20[<a href="#orgdd267d0">1</a>] heroes to use as a negative example to expand our data pool.  The smaller our data pool the more heroes we should select.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcfd957a" class="outline-3">
+<h3 id="orgcfd957a"><span class="section-number-3">3.2</span> multi-sampling games</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Each game can be sampled multiple times (every ~5min) to gather data of many gamestates
+</p>
+
+<ul class="org-ul">
+<li>Inputs
+<ul class="org-ul">
+<li>radiant/dire picks/bans (24 total)
+<ul class="org-ul">
+<li>2 bans each (alternating)</li>
+<li>1 radiant, 2 dire, 1 radiant pick</li>
+<li>3 bans each (alternating)</li>
+<li>1 dire, 2 radiant, 1 dire pick</li>
+<li>2 bans each (alternating)</li>
+<li>1,1 pick</li>
+</ul></li>
+<li>game time</li>
+<li>radiant/dire hero data
+<ul class="org-ul">
+<li>5 heroes (per hero)
+<ul class="org-ul">
+<li>items
+<ul class="org-ul">
+<li>6 items, 3 backpack, 1 tp slot, 1 neuteral item slot</li>
+</ul></li>
+<li>KDA</li>
+<li>track consumables bought (tango,mango,salve,blood grenade)</li>
+<li>gold</li>
+<li>level/XP</li>
+<li>GPM/XPM (gold/XP per minute)</li>
+<li>meta stats
+<ul class="org-ul">
+<li>disable duration
+<ul class="org-ul">
+<li>stun/silence/root</li>
+</ul></li>
+<li>hero damage</li>
+<li>tower damage</li>
+<li>creep score/last hits</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="outline-container-orgb887932" class="outline-4">
+<h4 id="orgb887932"><span class="section-number-4">3.2.1</span> Pros</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+Generates lots of training data
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf16702c" class="outline-4">
+<h4 id="orgf16702c"><span class="section-number-4">3.2.2</span> Cons</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+This could bias long games
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org76fd390" class="outline-3">
+<h3 id="org76fd390"><span class="section-number-3">3.3</span> opendota</h3>
+<div class="outline-text-3" id="text-3-3">
+</div>
+<div id="outline-container-org3e0eea6" class="outline-4">
+<h4 id="org3e0eea6"><span class="section-number-4">3.3.1</span> Links</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<p>
+<a href="https://docs.opendota.com">https://docs.opendota.com</a>
+</p>
+
+<p>
+<a href="https://api.opendota.com/api/">https://api.opendota.com/api/</a>
+</p>
+
+<p>
+<a href="https://api.opendota.com/api/proMatches">https://api.opendota.com/api/proMatches</a>
+</p>
+
+<p>
+<a href="https://api.opendota.com/api/proPlayers">https://api.opendota.com/api/proPlayers</a>
+</p>
+
+<p>
+<a href="https://api.opendota.com/api/explorer?sql=SELECT%20*%20FROM%20matches%20JOIN%20match_patch%20using(match_id)%20WHERE%20match_patch.patch%20=%20'7.33'%20LIMIT%2010">https://api.opendota.com/api/explorer?sql=SELECT * FROM matches JOIN match_patch using(match_id) WHERE match_patch.patch = '7.33' LIMIT 10</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6883836" class="outline-2">
+<h2 id="org6883836"><span class="section-number-2">4</span> model model</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org5d80001" class="outline-3">
+<h3 id="org5d80001"><span class="section-number-3">4.1</span> predict draft</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+Inputs are hero pick/ban order.
+</p>
+
+<p>
+Outputs are heroes assigned to their predicted roles.
+</p>
+
+
+<div class="figure">
+<p><img src="draftPredictor.png" alt="draftPredictor.png">
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3123c8e" class="outline-3">
+<h3 id="org3123c8e"><span class="section-number-3">4.2</span> predict pick</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Inputs are hero pick/ban order.
+</p>
+
+<p>
+Outputs are percentages for each hero+position.  How good is axe pos 1 or batrider pos 2?
+</p>
+
+
+<div class="figure">
+<p><img src="nextPick.png" alt="nextPick.png">
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org79b7616" class="outline-3">
+<h3 id="org79b7616"><span class="section-number-3">4.3</span> RNN</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+Input X<sub>t</sub> is a vector representing the last picked hero
+</p>
+
+<p>
+The recurrent parameter H<sub>t</sub> is recurrent
+</p>
+
+<p>
+The output Y<sub>t</sub> is a vector that should be near the best hero choice
+</p>
+
+<p>
+LLMs are only able to learn a few time steps in the past[<a href="#orgdd267d0">1</a>] due to the multiplicative nature of the recurrent edge update.  This means that LSTMs are the preferred method.
+</p>
+
+
+<div class="figure">
+<p><img src="rnn.png" alt="rnn.png">
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org21391d0" class="outline-2">
+<h2 id="org21391d0"><span class="section-number-2">5</span> Random links</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>Papers to read
+<ul class="org-ul">
+<li><a href="http://proceedings.mlr.press/v97/bose19a/bose19a.pdf">Compositional Fairness Constraints for Graph Embeddings</a></li>
+<li><a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=9517710">Mixed Dimension Embeddings with Application to Memory-Efficient Recommendation Systems</a> <a href="https://ieeexplore.ieee.org/abstract/document/9517710">alt</a></li>
+<li><a href="https://arxiv.org/pdf/2202.02427.pdf">Lightweight Compositional Embeddings for Incremental Streaming Recommendation</a></li>
+<li><a href="https://arxiv.org/pdf/1805.07544.pdf">conditional network embeddings</a></li>
+<li><a href="https://iopscience.iop.org/article/10.1088/1367-2630/ab57d2/pdf">Mercator: uncovering faithful hyperbolic embeddings of complex networks</a></li>
+<li><a href="https://pdf.sciencedirectassets.com/271506/1-s2.0-S0957417417X00250/1-s2.0-S0957417417308333/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJ///////////wEaCXVzLWVhc3QtMSJIMEYCIQCb0DlDQoRRCkKpiCjk45fctMfPy0v691B8QlghOKzVcQIhAOjLI3q4tcheTne7C/tn7YaT/vYgw+B5hnVCh3Ig6JrLKrsFCMf//////////wEQBRoMMDU5MDAzNTQ2ODY1IgxFKDMKRMDJkwwOvFoqjwUQ1ETJxzAarW42lSqL0K1vGxe1849IsUzOw6xDnYvho54CFIjKpZD5kWMtDbKq250HpJavsX0myE8lqoLIOgx7wDNNtIVklZ4VO275ScfUVcVv5bOED4AXNtBkpqTqA2IaSKAE0N2JUj9c7XLACuEMJt8ffu1n8iEx3jxJfomkHfjISpYtYfCg/QQIzbxJHnJG1IWts1XhQaBmBO1rzUW+DplAquCCFw3ibHM5K6P7nWIkH6n4aig8NgiUDSgIMIAIlKgPr2KhlOKnjxifqX7cUXTSP0wxUH0cfU1WBEaFYPO14plqKps/EOX54LxEqUo0TrZWiLugwQHR2sExmMh9ysGuYMMiWUnsJvKelnoHv3BHoC+eZSiPumwrKGTBOY14GwB61yTO0eaqZ/wmDjNFaLj2cjwWlSd4gpTrfnXH2EvdeSkOnu2+6cGMubTjTpfOzSBZvqjp7u0hBTnPJg3WhQhCvXDhOQPfiKeCW88WycMY7nTdmwINDhE0Yp5gLV9OJUSRXn1ZfT5hVNZcwtsGyPdVgfglIpZYABH4x4TQ/+FKbsZbzMMu91wZhGB1EAjSdOsgPs9n6f8S1H1sJWOD2D7D52Nzp4P54xqbhNeZkYQrBW5oj9inJsKH3Ozb9zYQjXVZIAwrNQ/7gwxL0zdCF/pQlYR8p2Esbotm0r0uGXQANnny6fQ6dMokgA7LYs6TiLyjvEkcF6rGhAtr3yv+ZH2vA+0Bh8xA+h/+OElk9Q1uWn9L0cSKXAfu5+vrMUZKQ4MXzp/80Jw8Zb73nit2jlhtCiIsLli+kKiLM5ImRpvaNSQ1/CWwkAOMLSHo/hetPqNCkAVVbr3IcICRoxnxuLWwmofxvN5dSlUGQFFqMJXRr6MGOrABfHgJPkF0qVV79qDNUXNQHKV8P/2XxvLFENnPSrisj7cBEIJizqlD6gns1+uEZ7metfOHgsqboJe8lAbOJsH5YnWX5Dotcre98olxDokrt6DLGYfGAFtwvLgAfZIawTbChhUBJgQbRQ5MvjIlbfJZwrjYW70DVDqDeie8bj2jJu1c2SCQYOfu/TIn/iPAHTv8pRr5g6vl1Uk5AFbnj+ekYaztKZxqz6XboqY4izrnsnQ=&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20230522T234458Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=300&amp;X-Amz-Credential=ASIAQ3PHCVTYTOWXGH77/20230522/us-east-1/s3/aws4_request&amp;X-Amz-Signature=49f6ef1d9ff0cf9d3f52248ec8ef22f1cc6031c9f750f4361c9c98eb0d396bd9&amp;hash=bd10e725982eaac9d403df4c78c9a0c3c2746fb50a764f025a27704266952454&amp;host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&amp;pii=S0957417417308333&amp;tid=spdf-2034425c-7791-4a5e-8a61-4217d5f7ccf9&amp;sid=eb80536d747fa9414589b27012810ada0ae9gxrqa&amp;type=client&amp;tsoh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&amp;ua=13105803065605045502&amp;rr=7cb8ee1db84dc6fd&amp;cc=us">The use of machine learning algorithms in recommender systems: A systematic review</a></li>
+<li><a href="https://arxiv.org/pdf/2210.16489.pdf">SMPrompt: Semantic-driven Augmented Templates and Multiple Mappings for Effective Prompt Learning</a></li>
+</ul></li>
+<li>Other
+<ul class="org-ul">
+<li><a href="https://towardsdatascience.com/the-exploration-exploitation-dilemma-f5622fbe1e82">exploration-exploitation trade-off</a></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge37cdde" class="outline-2">
+<h2 id="orge37cdde"><span class="section-number-2">6</span> Citations</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-orgdd267d0" class="outline-3">
+<h3 id="orgdd267d0"><span class="section-number-3">6.1</span> Defense of the Ancients DOTA 2 Draft Recommendation System</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+<a href="https://ieeexplore.ieee.org/abstract/document/9776822">https://ieeexplore.ieee.org/abstract/document/9776822</a>
+</p>
+
+<p>
+Y. Mohammed, S. Srinivasan, S. Iyer and A. Nagarajan, "Defense of the Ancients (DOTA 2)-Draft Recommendation System," 2022 6th International Conference on Trends in Electronics and Informatics (ICOEI), Tirunelveli, India, 2022, pp. 13-17, doi: 10.1109/ICOEI53556.2022.9776822.
+</p>
+
+
+<div class="figure">
+<p><img src="sysarch.png" alt="sysarch.png">
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: cummy-dota-boy</p>
+<p class="date">Created: 2023-05-23 Tue 10:18</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
