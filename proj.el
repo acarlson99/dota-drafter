@@ -15,4 +15,6 @@
 		 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
 		 :publishing-directory ,(string-join `(,proj-dir "docs"))
 		 :publishing-function org-publish-attachment)
-		("gh-pages" :components ("gh-assets" "gh-notes"))))
+		("gh-pages"
+		 :components ("gh-assets" "gh-notes")
+		 )))
