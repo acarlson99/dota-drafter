@@ -3,6 +3,7 @@
 #+HTML_DOCTYPE: html5
 #+HTML_HEAD: <style>body{background-color:#313338;color:#b8b6b4;}a{color:#1768AC;}table,th,td{border:1px solid grey;border-collapse:collapse;}</style>
 #+OPTIONS: html-postamble:auto
+#+EXPORT_FILE_NAME: index
 
 * idea
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-05-23 Tue 10:18 -->
+<!-- 2023-05-23 Tue 10:30 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DDML dota draft machine learning</title>
@@ -233,72 +233,72 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org29f89e1">1. idea</a></li>
-<li><a href="#org0894525">2. training methods</a>
+<li><a href="#orgb156b30">1. idea</a></li>
+<li><a href="#org7d4eea3">2. training methods</a>
 <ul>
-<li><a href="#org0df4b46">2.1. recommendation algorithm</a>
+<li><a href="#org22e049d">2.1. recommendation algorithm</a>
 <ul>
-<li><a href="#orged858b5">2.1.1. Pros</a></li>
-<li><a href="#org59acb70">2.1.2. Cons</a></li>
+<li><a href="#org238ed91">2.1.1. Pros</a></li>
+<li><a href="#orgbabde1e">2.1.2. Cons</a></li>
 </ul>
 </li>
-<li><a href="#orgb83bf67">2.2. vector analysis</a>
+<li><a href="#orgfa3d067">2.2. vector analysis</a>
 <ul>
-<li><a href="#org544f131">2.2.1. Gensim</a></li>
-<li><a href="#org6d022f5">2.2.2. Feature Extraction</a></li>
-<li><a href="#orga9845ee">2.2.3. Links</a></li>
-<li><a href="#org0610184">2.2.4. Keywords</a></li>
-<li><a href="#org574d115">2.2.5. Pros</a></li>
-<li><a href="#orge1ebb60">2.2.6. Cons</a></li>
+<li><a href="#org43a0fa1">2.2.1. Gensim</a></li>
+<li><a href="#org7d5241b">2.2.2. Feature Extraction</a></li>
+<li><a href="#org2ec1f5a">2.2.3. Links</a></li>
+<li><a href="#org10524ee">2.2.4. Keywords</a></li>
+<li><a href="#org7654c45">2.2.5. Pros</a></li>
+<li><a href="#orge7f34bc">2.2.6. Cons</a></li>
 </ul>
 </li>
-<li><a href="#org62ca23d">2.3. LLM Method</a>
+<li><a href="#org9f17094">2.3. LLM Method</a>
 <ul>
-<li><a href="#org8200169">2.3.1. CBOW</a></li>
-<li><a href="#org67bba6c">2.3.2. Links</a></li>
-<li><a href="#org0226597">2.3.3. Keywords</a></li>
-<li><a href="#org8ae0efb">2.3.4. Pros</a></li>
-<li><a href="#org4372090">2.3.5. Cons</a></li>
+<li><a href="#orgdbc81d4">2.3.1. CBOW</a></li>
+<li><a href="#org1b74894">2.3.2. Links</a></li>
+<li><a href="#org02748fb">2.3.3. Keywords</a></li>
+<li><a href="#orgd7e9ad6">2.3.4. Pros</a></li>
+<li><a href="#org0889dfc">2.3.5. Cons</a></li>
 </ul>
 </li>
-<li><a href="#orgf30e574">2.4. Prompt engineering</a></li>
+<li><a href="#org71d6907">2.4. Prompt engineering</a></li>
 </ul>
 </li>
-<li><a href="#org4e6f85c">3. data tricks</a>
+<li><a href="#orgb03a987">3. data tricks</a>
 <ul>
-<li><a href="#org8e1b69f">3.1. Negative sampling</a></li>
-<li><a href="#orgcfd957a">3.2. multi-sampling games</a>
+<li><a href="#orgb97b9be">3.1. Negative sampling</a></li>
+<li><a href="#org9b62b25">3.2. multi-sampling games</a>
 <ul>
-<li><a href="#orgb887932">3.2.1. Pros</a></li>
-<li><a href="#orgf16702c">3.2.2. Cons</a></li>
+<li><a href="#orge2e8703">3.2.1. Pros</a></li>
+<li><a href="#org6deff35">3.2.2. Cons</a></li>
 </ul>
 </li>
-<li><a href="#org76fd390">3.3. opendota</a>
+<li><a href="#org038b75a">3.3. opendota</a>
 <ul>
-<li><a href="#org3e0eea6">3.3.1. Links</a></li>
+<li><a href="#orgb977914">3.3.1. Links</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org6883836">4. model model</a>
+<li><a href="#org5ab98aa">4. model model</a>
 <ul>
-<li><a href="#org5d80001">4.1. predict draft</a></li>
-<li><a href="#org3123c8e">4.2. predict pick</a></li>
-<li><a href="#org79b7616">4.3. RNN</a></li>
+<li><a href="#orga82d3ab">4.1. predict draft</a></li>
+<li><a href="#org544aaa1">4.2. predict pick</a></li>
+<li><a href="#orgff49ed5">4.3. RNN</a></li>
 </ul>
 </li>
-<li><a href="#org21391d0">5. Random links</a></li>
-<li><a href="#orge37cdde">6. Citations</a>
+<li><a href="#org99c87d8">5. Random links</a></li>
+<li><a href="#org19b4ade">6. Citations</a>
 <ul>
-<li><a href="#orgdd267d0">6.1. Defense of the Ancients DOTA 2 Draft Recommendation System</a></li>
+<li><a href="#orgb73f1ae">6.1. Defense of the Ancients DOTA 2 Draft Recommendation System</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org29f89e1" class="outline-2">
-<h2 id="org29f89e1"><span class="section-number-2">1</span> idea</h2>
+<div id="outline-container-orgb156b30" class="outline-2">
+<h2 id="orgb156b30"><span class="section-number-2">1</span> idea</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 I would like to be able to determine the best next pick in a dota draft.
@@ -424,20 +424,20 @@ The tool should be sensitive to new data and able to refine itself to counter me
 </div>
 </div>
 
-<div id="outline-container-org0894525" class="outline-2">
-<h2 id="org0894525"><span class="section-number-2">2</span> training methods</h2>
+<div id="outline-container-org7d4eea3" class="outline-2">
+<h2 id="org7d4eea3"><span class="section-number-2">2</span> training methods</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org0df4b46" class="outline-3">
-<h3 id="org0df4b46"><span class="section-number-3">2.1</span> recommendation algorithm</h3>
+<div id="outline-container-org22e049d" class="outline-3">
+<h3 id="org22e049d"><span class="section-number-3">2.1</span> recommendation algorithm</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Given choices X and Y and Z what is the best next choice
 </p>
 </div>
 
-<div id="outline-container-orged858b5" class="outline-4">
-<h4 id="orged858b5"><span class="section-number-4">2.1.1</span> Pros</h4>
+<div id="outline-container-org238ed91" class="outline-4">
+<h4 id="org238ed91"><span class="section-number-4">2.1.1</span> Pros</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 This is a mature algorithm with investment from Netflix and Amazon.  Surely there are good papers and resources on this
@@ -445,8 +445,8 @@ This is a mature algorithm with investment from Netflix and Amazon.  Surely ther
 </div>
 </div>
 
-<div id="outline-container-org59acb70" class="outline-4">
-<h4 id="org59acb70"><span class="section-number-4">2.1.2</span> Cons</h4>
+<div id="outline-container-orgbabde1e" class="outline-4">
+<h4 id="orgbabde1e"><span class="section-number-4">2.1.2</span> Cons</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 Most rec. algorithms are geared towards like-things (TV shows, products, books, music) while our algorithm should recommend a diverse set of heroes.
@@ -455,8 +455,8 @@ Most rec. algorithms are geared towards like-things (TV shows, products, books, 
 </div>
 </div>
 
-<div id="outline-container-orgb83bf67" class="outline-3">
-<h3 id="orgb83bf67"><span class="section-number-3">2.2</span> vector analysis</h3>
+<div id="outline-container-orgfa3d067" class="outline-3">
+<h3 id="orgfa3d067"><span class="section-number-3">2.2</span> vector analysis</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 Think of each character as a vector.  Ideally a team should be comprised of diverse heroes or vectors pointing in different directions.
@@ -480,8 +480,8 @@ Think of each character as a vector.  Ideally a team should be comprised of dive
 </ul>
 </div>
 
-<div id="outline-container-org544f131" class="outline-4">
-<h4 id="org544f131"><span class="section-number-4">2.2.1</span> Gensim</h4>
+<div id="outline-container-org43a0fa1" class="outline-4">
+<h4 id="org43a0fa1"><span class="section-number-4">2.2.1</span> Gensim</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
 A popular Python library for creating vector space embeddings commonly used in NLP is <a href="https://pypi.org/project/gensim/">gensim</a>.  We should be able to generate vectors (size=30?) representing hero features with which to represent heroes within our model.
@@ -493,30 +493,30 @@ Likely this would involve creating a "dictionary" of <a href="https://en.wikiped
 </div>
 </div>
 
-<div id="outline-container-org6d022f5" class="outline-4">
-<h4 id="org6d022f5"><span class="section-number-4">2.2.2</span> Feature Extraction</h4>
+<div id="outline-container-org7d5241b" class="outline-4">
+<h4 id="org7d5241b"><span class="section-number-4">2.2.2</span> Feature Extraction</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <p>
-Lame, boring, outdated; see [<a href="#orgf30e574">prompt engineering</a>]
+Lame, boring, outdated; see [<a href="#org71d6907">prompt engineering</a>]
 </p>
 </div>
 </div>
 
-<div id="outline-container-orga9845ee" class="outline-4">
-<h4 id="orga9845ee"><span class="section-number-4">2.2.3</span> Links</h4>
+<div id="outline-container-org2ec1f5a" class="outline-4">
+<h4 id="org2ec1f5a"><span class="section-number-4">2.2.3</span> Links</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <p>
 Relevant blog post <a href="https://gilgi.org/blog/dota-hero-embedding/">https://gilgi.org/blog/dota-hero-embedding/</a>
 </p>
 
 <p>
-[<a href="#orgdd267d0">1</a>]
+[<a href="#orgb73f1ae">1</a>]
 </p>
 </div>
 </div>
 
-<div id="outline-container-org0610184" class="outline-4">
-<h4 id="org0610184"><span class="section-number-4">2.2.4</span> Keywords</h4>
+<div id="outline-container-org10524ee" class="outline-4">
+<h4 id="org10524ee"><span class="section-number-4">2.2.4</span> Keywords</h4>
 <div class="outline-text-4" id="text-2-2-4">
 <p>
 Word2Vec, CBOW, skip-gram
@@ -524,8 +524,8 @@ Word2Vec, CBOW, skip-gram
 </div>
 </div>
 
-<div id="outline-container-org574d115" class="outline-4">
-<h4 id="org574d115"><span class="section-number-4">2.2.5</span> Pros</h4>
+<div id="outline-container-org7654c45" class="outline-4">
+<h4 id="org7654c45"><span class="section-number-4">2.2.5</span> Pros</h4>
 <div class="outline-text-4" id="text-2-2-5">
 <p>
 Easily represents relations between heroes/items.  This is likely a useful way to represent data regardless of training method.
@@ -533,8 +533,8 @@ Easily represents relations between heroes/items.  This is likely a useful way t
 </div>
 </div>
 
-<div id="outline-container-orge1ebb60" class="outline-4">
-<h4 id="orge1ebb60"><span class="section-number-4">2.2.6</span> Cons</h4>
+<div id="outline-container-orge7f34bc" class="outline-4">
+<h4 id="orge7f34bc"><span class="section-number-4">2.2.6</span> Cons</h4>
 <div class="outline-text-4" id="text-2-2-6">
 <p>
 This is hard.  A hero is more than the sum of its skills.
@@ -569,8 +569,8 @@ Some heroes may be lane counters, but not lategame counters.  This can also be f
 </div>
 </div>
 
-<div id="outline-container-org62ca23d" class="outline-3">
-<h3 id="org62ca23d"><span class="section-number-3">2.3</span> LLM Method</h3>
+<div id="outline-container-org9f17094" class="outline-3">
+<h3 id="org9f17094"><span class="section-number-3">2.3</span> LLM Method</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 This could be done by filling in heroes and asking a model "what hero is in this position"
@@ -633,8 +633,8 @@ Something to keep in mind is pick order and role.  Usually supports pick first, 
 </p>
 </div>
 
-<div id="outline-container-org8200169" class="outline-4">
-<h4 id="org8200169"><span class="section-number-4">2.3.1</span> CBOW</h4>
+<div id="outline-container-orgdbc81d4" class="outline-4">
+<h4 id="orgdbc81d4"><span class="section-number-4">2.3.1</span> CBOW</h4>
 <div class="outline-text-4" id="text-2-3-1">
 
 <div class="figure">
@@ -648,17 +648,17 @@ NOTE: this visualization does not incorperate bans, but could easily be modified
 </div>
 </div>
 
-<div id="outline-container-org67bba6c" class="outline-4">
-<h4 id="org67bba6c"><span class="section-number-4">2.3.2</span> Links</h4>
+<div id="outline-container-org1b74894" class="outline-4">
+<h4 id="org1b74894"><span class="section-number-4">2.3.2</span> Links</h4>
 <div class="outline-text-4" id="text-2-3-2">
 <p>
-[<a href="#orgdd267d0">1</a>]
+[<a href="#orgb73f1ae">1</a>]
 </p>
 </div>
 </div>
 
-<div id="outline-container-org0226597" class="outline-4">
-<h4 id="org0226597"><span class="section-number-4">2.3.3</span> Keywords</h4>
+<div id="outline-container-org02748fb" class="outline-4">
+<h4 id="org02748fb"><span class="section-number-4">2.3.3</span> Keywords</h4>
 <div class="outline-text-4" id="text-2-3-3">
 <p>
 CBOW (continuous bag of words), skip-gram, RNN (recurrent neural network), LSTM (long short-term memory)
@@ -666,8 +666,8 @@ CBOW (continuous bag of words), skip-gram, RNN (recurrent neural network), LSTM 
 </div>
 </div>
 
-<div id="outline-container-org8ae0efb" class="outline-4">
-<h4 id="org8ae0efb"><span class="section-number-4">2.3.4</span> Pros</h4>
+<div id="outline-container-orgd7e9ad6" class="outline-4">
+<h4 id="orgd7e9ad6"><span class="section-number-4">2.3.4</span> Pros</h4>
 <div class="outline-text-4" id="text-2-3-4">
 <p>
 Easy, similar to current LLM techniques
@@ -675,8 +675,8 @@ Easy, similar to current LLM techniques
 </div>
 </div>
 
-<div id="outline-container-org4372090" class="outline-4">
-<h4 id="org4372090"><span class="section-number-4">2.3.5</span> Cons</h4>
+<div id="outline-container-org0889dfc" class="outline-4">
+<h4 id="org0889dfc"><span class="section-number-4">2.3.5</span> Cons</h4>
 <div class="outline-text-4" id="text-2-3-5">
 <p>
 The problem with this approach is that it will ONLY predict the most commonly picked hero, not the optimal hero.
@@ -685,8 +685,8 @@ The problem with this approach is that it will ONLY predict the most commonly pi
 </div>
 </div>
 
-<div id="outline-container-orgf30e574" class="outline-3">
-<h3 id="orgf30e574"><span class="section-number-3">2.4</span> Prompt engineering</h3>
+<div id="outline-container-org71d6907" class="outline-3">
+<h3 id="org71d6907"><span class="section-number-3">2.4</span> Prompt engineering</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 Encode -&gt; generate prompt (few-shot?) based on hero/item encodings -&gt; GPT -&gt; profit??
@@ -695,21 +695,21 @@ Encode -&gt; generate prompt (few-shot?) based on hero/item encodings -&gt; GPT 
 </div>
 </div>
 
-<div id="outline-container-org4e6f85c" class="outline-2">
-<h2 id="org4e6f85c"><span class="section-number-2">3</span> data tricks</h2>
+<div id="outline-container-orgb03a987" class="outline-2">
+<h2 id="orgb03a987"><span class="section-number-2">3</span> data tricks</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org8e1b69f" class="outline-3">
-<h3 id="org8e1b69f"><span class="section-number-3">3.1</span> Negative sampling</h3>
+<div id="outline-container-orgb97b9be" class="outline-3">
+<h3 id="orgb97b9be"><span class="section-number-3">3.1</span> Negative sampling</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
-This can be used to select 2-20[<a href="#orgdd267d0">1</a>] heroes to use as a negative example to expand our data pool.  The smaller our data pool the more heroes we should select.
+This can be used to select 2-20[<a href="#orgb73f1ae">1</a>] heroes to use as a negative example to expand our data pool.  The smaller our data pool the more heroes we should select.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgcfd957a" class="outline-3">
-<h3 id="orgcfd957a"><span class="section-number-3">3.2</span> multi-sampling games</h3>
+<div id="outline-container-org9b62b25" class="outline-3">
+<h3 id="org9b62b25"><span class="section-number-3">3.2</span> multi-sampling games</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 Each game can be sampled multiple times (every ~5min) to gather data of many gamestates
@@ -757,8 +757,8 @@ Each game can be sampled multiple times (every ~5min) to gather data of many gam
 </ul>
 </div>
 
-<div id="outline-container-orgb887932" class="outline-4">
-<h4 id="orgb887932"><span class="section-number-4">3.2.1</span> Pros</h4>
+<div id="outline-container-orge2e8703" class="outline-4">
+<h4 id="orge2e8703"><span class="section-number-4">3.2.1</span> Pros</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <p>
 Generates lots of training data
@@ -766,8 +766,8 @@ Generates lots of training data
 </div>
 </div>
 
-<div id="outline-container-orgf16702c" class="outline-4">
-<h4 id="orgf16702c"><span class="section-number-4">3.2.2</span> Cons</h4>
+<div id="outline-container-org6deff35" class="outline-4">
+<h4 id="org6deff35"><span class="section-number-4">3.2.2</span> Cons</h4>
 <div class="outline-text-4" id="text-3-2-2">
 <p>
 This could bias long games
@@ -776,12 +776,12 @@ This could bias long games
 </div>
 </div>
 
-<div id="outline-container-org76fd390" class="outline-3">
-<h3 id="org76fd390"><span class="section-number-3">3.3</span> opendota</h3>
+<div id="outline-container-org038b75a" class="outline-3">
+<h3 id="org038b75a"><span class="section-number-3">3.3</span> opendota</h3>
 <div class="outline-text-3" id="text-3-3">
 </div>
-<div id="outline-container-org3e0eea6" class="outline-4">
-<h4 id="org3e0eea6"><span class="section-number-4">3.3.1</span> Links</h4>
+<div id="outline-container-orgb977914" class="outline-4">
+<h4 id="orgb977914"><span class="section-number-4">3.3.1</span> Links</h4>
 <div class="outline-text-4" id="text-3-3-1">
 <p>
 <a href="https://docs.opendota.com">https://docs.opendota.com</a>
@@ -807,12 +807,12 @@ This could bias long games
 </div>
 </div>
 
-<div id="outline-container-org6883836" class="outline-2">
-<h2 id="org6883836"><span class="section-number-2">4</span> model model</h2>
+<div id="outline-container-org5ab98aa" class="outline-2">
+<h2 id="org5ab98aa"><span class="section-number-2">4</span> model model</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org5d80001" class="outline-3">
-<h3 id="org5d80001"><span class="section-number-3">4.1</span> predict draft</h3>
+<div id="outline-container-orga82d3ab" class="outline-3">
+<h3 id="orga82d3ab"><span class="section-number-3">4.1</span> predict draft</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 Inputs are hero pick/ban order.
@@ -830,8 +830,8 @@ Outputs are heroes assigned to their predicted roles.
 </div>
 </div>
 
-<div id="outline-container-org3123c8e" class="outline-3">
-<h3 id="org3123c8e"><span class="section-number-3">4.2</span> predict pick</h3>
+<div id="outline-container-org544aaa1" class="outline-3">
+<h3 id="org544aaa1"><span class="section-number-3">4.2</span> predict pick</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 Inputs are hero pick/ban order.
@@ -849,8 +849,8 @@ Outputs are percentages for each hero+position.  How good is axe pos 1 or batrid
 </div>
 </div>
 
-<div id="outline-container-org79b7616" class="outline-3">
-<h3 id="org79b7616"><span class="section-number-3">4.3</span> RNN</h3>
+<div id="outline-container-orgff49ed5" class="outline-3">
+<h3 id="orgff49ed5"><span class="section-number-3">4.3</span> RNN</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 Input X<sub>t</sub> is a vector representing the last picked hero
@@ -865,7 +865,7 @@ The output Y<sub>t</sub> is a vector that should be near the best hero choice
 </p>
 
 <p>
-LLMs are only able to learn a few time steps in the past[<a href="#orgdd267d0">1</a>] due to the multiplicative nature of the recurrent edge update.  This means that LSTMs are the preferred method.
+LLMs are only able to learn a few time steps in the past[<a href="#orgb73f1ae">1</a>] due to the multiplicative nature of the recurrent edge update.  This means that LSTMs are the preferred method.
 </p>
 
 
@@ -877,8 +877,8 @@ LLMs are only able to learn a few time steps in the past[<a href="#orgdd267d0">1
 </div>
 </div>
 
-<div id="outline-container-org21391d0" class="outline-2">
-<h2 id="org21391d0"><span class="section-number-2">5</span> Random links</h2>
+<div id="outline-container-org99c87d8" class="outline-2">
+<h2 id="org99c87d8"><span class="section-number-2">5</span> Random links</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>Papers to read
@@ -899,12 +899,12 @@ LLMs are only able to learn a few time steps in the past[<a href="#orgdd267d0">1
 </div>
 </div>
 
-<div id="outline-container-orge37cdde" class="outline-2">
-<h2 id="orge37cdde"><span class="section-number-2">6</span> Citations</h2>
+<div id="outline-container-org19b4ade" class="outline-2">
+<h2 id="org19b4ade"><span class="section-number-2">6</span> Citations</h2>
 <div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-orgdd267d0" class="outline-3">
-<h3 id="orgdd267d0"><span class="section-number-3">6.1</span> Defense of the Ancients DOTA 2 Draft Recommendation System</h3>
+<div id="outline-container-orgb73f1ae" class="outline-3">
+<h3 id="orgb73f1ae"><span class="section-number-3">6.1</span> Defense of the Ancients DOTA 2 Draft Recommendation System</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 <a href="https://ieeexplore.ieee.org/abstract/document/9776822">https://ieeexplore.ieee.org/abstract/document/9776822</a>
@@ -925,7 +925,7 @@ Y. Mohammed, S. Srinivasan, S. Iyer and A. Nagarajan, "Defense of the Ancients (
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: cummy-dota-boy</p>
-<p class="date">Created: 2023-05-23 Tue 10:18</p>
+<p class="date">Created: 2023-05-23 Tue 10:30</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
