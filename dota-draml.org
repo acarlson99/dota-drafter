@@ -222,19 +222,32 @@ Generates lots of training data
 
 This could bias long games
 
+* API
 ** opendota
-
-*** Links
 
 https://docs.opendota.com
 
 https://api.opendota.com/api/
 
+Can list pro players/matches
+
 https://api.opendota.com/api/proMatches
 
 https://api.opendota.com/api/proPlayers
 
+Can query with custom SQL
+
 https://api.opendota.com/api/explorer?sql=SELECT%20%2A%20FROM%20matches%20JOIN%20match_patch%20using%28match_id%29%20WHERE%20match_patch.patch%20%3D%20%277.33%27%20LIMIT%2010
+
+** openAI
+
+https://platform.openai.com/docs/models/overview
+
+Create embeddings
+
+https://platform.openai.com/docs/models/embeddings
+
+https://openai.com/blog/new-and-improved-embedding-model
 
 * model model
 
