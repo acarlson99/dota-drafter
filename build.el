@@ -5,8 +5,7 @@
 (defvar proj-dir (file-name-directory (buffer-file-name)))
 
 (require 'subr-x)
-
-(defvar org-publish-project-alist
+(setq org-publish-project-alist
 	  `(("gh-notes"
 		 :base-directory ,proj-dir
 		 :base-extension "org"
@@ -22,5 +21,5 @@
 		 :components ("gh-assets" "gh-notes")
 		 )))
 
-(require 'org)
-(org-publish-project "gh-pages")
+(require 'org-loaddefs)
+(org-publish-project "gh-pages" t)
