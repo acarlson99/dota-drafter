@@ -1,6 +1,6 @@
-;;; proj.el ---                                      -*- lexical-binding: t; -*-
+;;; build.el ---                                     -*- lexical-binding: t; -*-
 ;; This file configures org mode's publish functionality to generate the gh-pages site for this project.
-;; Load this file/buffer, evaluate it, and then execute: M-x org-publish-project RET gh-pages RET
+;; Load this file/buffer, and evaluate it to publish the project
 
 (defvar proj-dir (file-name-directory (buffer-file-name)))
 
