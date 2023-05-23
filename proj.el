@@ -1,9 +1,12 @@
+;;; proj.el ---                                      -*- lexical-binding: t; -*-
 ;; This file configures org mode's publish functionality to generate the gh-pages site for this project.
 ;; Load this file/buffer, evaluate it, and then execute: M-x org-publish-project RET gh-pages RET
 
 (defvar proj-dir (file-name-directory (buffer-file-name)))
 
-(setq org-publish-project-alist
+(require 'subr-x)
+
+(defvar org-publish-project-alist
 	  `(("gh-notes"
 		 :base-directory ,proj-dir
 		 :base-extension "org"
@@ -18,3 +21,6 @@
 		("gh-pages"
 		 :components ("gh-assets" "gh-notes")
 		 )))
+
+(require 'org)
+(org-publish-project "gh-pages")
