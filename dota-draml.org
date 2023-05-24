@@ -1,11 +1,14 @@
 #+TITLE: Dota Draml
 #+AUTHOR: acarlson
+# -*- org-export-html-postamble:t; -*-
 #+HTML_DOCTYPE: html5
-#+HTML_HEAD: <style>body{background-color:#313338;color:#b8b6b4;}a{color:#1768AC;}table,th,td{border:1px solid grey;border-collapse:collapse;}</style>
-#+OPTIONS: html-postamble:auto
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style.css" />
+#+OPTIONS: html-postamble:"<p><a href='https://github.com/acarlson99'><img src='github.png'></a></p><p class='author'>Author: %a<\p><p class='date'>Last Updated: %C</p><p class='creator'>Built with %c</p>"
 #+EXPORT_FILE_NAME: index
 
 * idea
+
+(setq org-export-html-postamble-format '(("en" "Date %d. Created by %d. <a href='acarlson99.github.io'>")))
 
 I would like to be able to determine the best next pick in a dota draft.
 
@@ -73,44 +76,7 @@ A popular Python library for creating vector space embeddings commonly used in N
 
 Likely this would involve creating a "dictionary" of [[https://en.wikipedia.org/wiki/One-hot][one-hot encoded]] dota heroes and training on many "sentences" (dota drafts)
 
-*** Feature Extraction
-
-Lame, boring, outdated; see [[*Prompt engineering][prompt engineering]]
-
-*** Links
-
-Relevant blog post https://gilgi.org/blog/dota-hero-embedding/
-
-[[[#9776822][1]]]
-
-*** Keywords
-
-Word2Vec, CBOW, skip-gram
-
-*** Pros
-
-Easily represents relations between heroes/items.  This is likely a useful way to represent data regardless of training method.
-
-*** Cons
-
-This is hard.  A hero is more than the sum of its skills.
-
-Metrics make this a bit better, but I am frontloading all the work by coming up with metrics by hand.  It would be much better to dynamically generate/"learn" vector dimensions.
-
-Also vector lengths seem problematic.  Lion has two disables (spike+hex) which is totally different from Pangolier who has multiple little stuns IF he hits the roll, and both of these are different from storm spirit who has a stun (vortex) on a low cooldown.  If Pangolier simply has a different stun magnitude than Lion this is insufficient because the skills are totally different AND the ability to use two different stuns vs a single multi-stunning ability is relevant.  Ideally this should be solved by having non-hardcoded vector dimensions.
-
-+Pango Swashbuckle (multi-hit attack) combined with a Basher (stun on attack) is much more effective than a Basher on Alchemist (though still useful).  The transformation is non-linear.+
-
-#+BEGIN_SRC text
-Pangolier + Basher + Troll Warlord - Pangolier != Troll Warlord
-#+END_SRC
-
-+Heroes+item transformations cannot be accurately represented by the same vector space.+
-NOTE: This is NOT an issue; vector embeddings are N-dimensional and there must exist some dimension that represents heroes and items linearly.
-
-Some heroes may be lane counters, but not lategame counters.  This can also be fixed by increasing dimensions.
-
-** LLM Method
+*** CBOW
 
 This could be done by filling in heroes and asking a model "what hero is in this position"
 
@@ -127,9 +93,7 @@ Perhaps weight by frequency-- how often the hero is picked-- and winrate-- how o
 
 Something to keep in mind is pick order and role.  Usually supports pick first, but strange pick orders (like first pick Muerta carry bc it's strong and there are few counterpicks) or flex picks (OG IO carry for example) might introduce complications.
 
-*** CBOW
-
-#+begin_src dot :file cbow.png :cmdline -Kdot -Tpng -Gsize=15
+#+BEGIN_SRC dot :file cbow.png :cmdline -Kdot -Tpng -Gsize=15
 digraph cbow {
   "W(t-5)" [color="green"]
   "W(t-4)" [color="red"]
@@ -152,27 +116,53 @@ digraph cbow {
   "W(t+4)" -> hidden
   hidden -> "W(t)"
 }
-#+end_src
+#+END_SRC
 
 #+RESULTS:
 [[file:cbow.png]]
 
 NOTE: this visualization does not incorperate bans, but could easily be modified to do so.  Not all dota games use the same ban order, but they DO all have the same pick order, so focusing on picks increases our usable data set.
 
+*** Feature Extraction
+
+Lame, boring, outdated; see [[*Prompt engineering][prompt engineering]]
+
 *** Links
 
+Relevant blog post https://gilgi.org/blog/dota-hero-embedding/
+
+[[[#9776822][1]]]
 
 *** Keywords
 
-CBOW (continuous bag of words), skip-gram, RNN (recurrent neural network), LSTM (long short-term memory)
+Word2Vec, CBOW (continuous bag of words), skip-gram, RNN (recurrent neural network), LSTM (long short-term memory), Transformer, [[#vaswani2017attention][Attention]]
 
 *** Pros
 
-Easy, similar to current LLM techniques
+Easily represents relations between heroes/items.  This is likely a useful way to represent data regardless of training method.
+
+Easy, similar to current LLM techniques.
 
 *** Cons
 
-The problem with this approach is that it will ONLY predict the most commonly picked hero, not the optimal hero.
+This is hard.  A hero is more than the sum of its skills.
+
+Metrics make this a bit better, but I am frontloading all the work by coming up with metrics by hand.  It would be much better to dynamically generate/"learn" vector dimensions.
+
+Also vector lengths seem problematic.  Lion has two disables (spike+hex) which is totally different from Pangolier who has multiple little stuns IF he hits the roll, and both of these are different from storm spirit who has a stun (vortex) on a low cooldown.  If Pangolier simply has a different stun magnitude than Lion this is insufficient because the skills are totally different AND the ability to use two different stuns vs a single multi-stunning ability is relevant.  Ideally this should be solved by having non-hardcoded vector dimensions.
+
++Pango Swashbuckle (multi-hit attack) combined with a Basher (stun on attack) is much more effective than a Basher on Alchemist (though still useful).  The transformation is non-linear.+
+
+#+BEGIN_SRC text
+Pangolier + Basher + Troll Warlord - Pangolier != Troll Warlord
+#+END_SRC
+
++Heroes+item transformations cannot be accurately represented by the same vector space.+
+NOTE: This is NOT an issue; vector embeddings are N-dimensional and there must exist some dimension that represents heroes and items linearly.
+
+Some heroes may be lane counters, but not lategame counters.  This can also be fixed by increasing dimensions.
+
+The problem with the CBOW approach is that it will ONLY predict the most commonly picked hero, not the optimal hero.
 
 ** Prompt engineering
 
@@ -257,7 +247,7 @@ Inputs are hero pick/ban order.
 
 Outputs are heroes assigned to their predicted roles.
 
-#+begin_src dot :file draftPredictor.png :cmdline -Kdot -Tpng -Gsize=15
+#+BEGIN_SRC dot :file draftPredictor.png :cmdline -Kdot -Tpng -Gsize=15
 digraph DraftPredictor {
   ban_1 -> hidden
   ban_2 -> hidden
@@ -288,7 +278,7 @@ digraph DraftPredictor {
   hidden -> radiant_pos_5
   hidden -> dire_pos_5
 }
-#+end_src
+#+END_SRC
 
 #+RESULTS:
 [[file:draftPredictor.png]]
@@ -299,7 +289,7 @@ Inputs are hero pick/ban order.
 
 Outputs are percentages for each hero+position.  How good is axe pos 1 or batrider pos 2?
 
-#+begin_src dot :file nextPick.png :cmdline -Kdot -Tpng -Gsize=15
+#+BEGIN_SRC dot :file nextPick.png :cmdline -Kdot -Tpng -Gsize=15
 digraph BestNextPick {
   ban_1 -> hidden
   ban_2 -> hidden
@@ -330,7 +320,7 @@ digraph BestNextPick {
   hidden -> windrunner_pos_4
   hidden -> windrunner_pos_5
 }
-#+end_src
+#+END_SRC
 
 #+RESULTS:
 [[file:nextPick.png]]
@@ -346,13 +336,13 @@ The output Y_t is a vector that should be near the best hero choice
 LLMs are only able to learn a few time steps in the past[[[#9776822][1]]] due to the multiplicative nature of the recurrent edge update.  This means that LSTMs are the preferred method.
 
 
-#+begin_src dot :file rnn.png :cmdline -Kdot -Tpng -Gsize=15
+#+BEGIN_SRC dot :file rnn.png :cmdline -Kdot -Tpng -Gsize=15
 digraph rnn {
   X_t -> RNN
   RNN->RNN [label="H_t"]
   RNN->Y_t
 }
-#+end_src
+#+END_SRC
 
 #+RESULTS:
 [[file:rnn.png]]
@@ -360,16 +350,16 @@ digraph rnn {
 * Random links
 
 - Papers to read
-  - [[http://proceedings.mlr.press/v97/bose19a/bose19a.pdf][Compositional Fairness Constraints for Graph Embeddings]]
-  - [[https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9517710][Mixed Dimension Embeddings with Application to Memory-Efficient Recommendation Systems]] [[https://ieeexplore.ieee.org/abstract/document/9517710][alt]]
-  - [[https://arxiv.org/pdf/2202.02427.pdf][Lightweight Compositional Embeddings for Incremental Streaming Recommendation]]
-  - [[https://arxiv.org/pdf/1805.07544.pdf][conditional network embeddings]]
-  - [[https://iopscience.iop.org/article/10.1088/1367-2630/ab57d2/pdf][Mercator: uncovering faithful hyperbolic embeddings of complex networks]]
-  - [[https://pdf.sciencedirectassets.com/271506/1-s2.0-S0957417417X00250/1-s2.0-S0957417417308333/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJ%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQCb0DlDQoRRCkKpiCjk45fctMfPy0v691B8QlghOKzVcQIhAOjLI3q4tcheTne7C%2Ftn7YaT%2FvYgw%2BB5hnVCh3Ig6JrLKrsFCMf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQBRoMMDU5MDAzNTQ2ODY1IgxFKDMKRMDJkwwOvFoqjwUQ1ETJxzAarW42lSqL0K1vGxe1849IsUzOw6xDnYvho54CFIjKpZD5kWMtDbKq250HpJavsX0myE8lqoLIOgx7wDNNtIVklZ4VO275ScfUVcVv5bOED4AXNtBkpqTqA2IaSKAE0N2JUj9c7XLACuEMJt8ffu1n8iEx3jxJfomkHfjISpYtYfCg%2FQQIzbxJHnJG1IWts1XhQaBmBO1rzUW%2BDplAquCCFw3ibHM5K6P7nWIkH6n4aig8NgiUDSgIMIAIlKgPr2KhlOKnjxifqX7cUXTSP0wxUH0cfU1WBEaFYPO14plqKps%2FEOX54LxEqUo0TrZWiLugwQHR2sExmMh9ysGuYMMiWUnsJvKelnoHv3BHoC%2BeZSiPumwrKGTBOY14GwB61yTO0eaqZ%2FwmDjNFaLj2cjwWlSd4gpTrfnXH2EvdeSkOnu2%2B6cGMubTjTpfOzSBZvqjp7u0hBTnPJg3WhQhCvXDhOQPfiKeCW88WycMY7nTdmwINDhE0Yp5gLV9OJUSRXn1ZfT5hVNZcwtsGyPdVgfglIpZYABH4x4TQ%2F%2BFKbsZbzMMu91wZhGB1EAjSdOsgPs9n6f8S1H1sJWOD2D7D52Nzp4P54xqbhNeZkYQrBW5oj9inJsKH3Ozb9zYQjXVZIAwrNQ%2F7gwxL0zdCF%2FpQlYR8p2Esbotm0r0uGXQANnny6fQ6dMokgA7LYs6TiLyjvEkcF6rGhAtr3yv%2BZH2vA%2B0Bh8xA%2Bh%2F%2BOElk9Q1uWn9L0cSKXAfu5%2BvrMUZKQ4MXzp%2F80Jw8Zb73nit2jlhtCiIsLli%2BkKiLM5ImRpvaNSQ1%2FCWwkAOMLSHo%2FhetPqNCkAVVbr3IcICRoxnxuLWwmofxvN5dSlUGQFFqMJXRr6MGOrABfHgJPkF0qVV79qDNUXNQHKV8P%2F2XxvLFENnPSrisj7cBEIJizqlD6gns1%2BuEZ7metfOHgsqboJe8lAbOJsH5YnWX5Dotcre98olxDokrt6DLGYfGAFtwvLgAfZIawTbChhUBJgQbRQ5MvjIlbfJZwrjYW70DVDqDeie8bj2jJu1c2SCQYOfu%2FTIn%2FiPAHTv8pRr5g6vl1Uk5AFbnj%2BekYaztKZxqz6XboqY4izrnsnQ%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230522T234458Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTYTOWXGH77%2F20230522%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=49f6ef1d9ff0cf9d3f52248ec8ef22f1cc6031c9f750f4361c9c98eb0d396bd9&hash=bd10e725982eaac9d403df4c78c9a0c3c2746fb50a764f025a27704266952454&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S0957417417308333&tid=spdf-2034425c-7791-4a5e-8a61-4217d5f7ccf9&sid=eb80536d747fa9414589b27012810ada0ae9gxrqa&type=client&tsoh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&ua=13105803065605045502&rr=7cb8ee1db84dc6fd&cc=us][The use of machine learning algorithms in recommender systems: A systematic review]]
-  - [[https://arxiv.org/pdf/2210.16489.pdf][SMPrompt: Semantic-driven Augmented Templates and Multiple Mappings for Effective Prompt Learning]]
+  - [ ] [[http://proceedings.mlr.press/v97/bose19a/bose19a.pdf][Compositional Fairness Constraints for Graph Embeddings]]
+  - [ ] [[https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9517710][Mixed Dimension Embeddings with Application to Memory-Efficient Recommendation Systems]] [[https://ieeexplore.ieee.org/abstract/document/9517710][alt]]
+  - [ ] [[https://arxiv.org/pdf/2202.02427.pdf][Lightweight Compositional Embeddings for Incremental Streaming Recommendation]]
+  - [ ] [[https://arxiv.org/pdf/1805.07544.pdf][conditional network embeddings]]
+  - [ ] [[https://iopscience.iop.org/article/10.1088/1367-2630/ab57d2/pdf][Mercator: uncovering faithful hyperbolic embeddings of complex networks]]
+  - [ ] [[https://pdf.sciencedirectassets.com/271506/1-s2.0-S0957417417X00250/1-s2.0-S0957417417308333/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJ%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQCb0DlDQoRRCkKpiCjk45fctMfPy0v691B8QlghOKzVcQIhAOjLI3q4tcheTne7C%2Ftn7YaT%2FvYgw%2BB5hnVCh3Ig6JrLKrsFCMf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQBRoMMDU5MDAzNTQ2ODY1IgxFKDMKRMDJkwwOvFoqjwUQ1ETJxzAarW42lSqL0K1vGxe1849IsUzOw6xDnYvho54CFIjKpZD5kWMtDbKq250HpJavsX0myE8lqoLIOgx7wDNNtIVklZ4VO275ScfUVcVv5bOED4AXNtBkpqTqA2IaSKAE0N2JUj9c7XLACuEMJt8ffu1n8iEx3jxJfomkHfjISpYtYfCg%2FQQIzbxJHnJG1IWts1XhQaBmBO1rzUW%2BDplAquCCFw3ibHM5K6P7nWIkH6n4aig8NgiUDSgIMIAIlKgPr2KhlOKnjxifqX7cUXTSP0wxUH0cfU1WBEaFYPO14plqKps%2FEOX54LxEqUo0TrZWiLugwQHR2sExmMh9ysGuYMMiWUnsJvKelnoHv3BHoC%2BeZSiPumwrKGTBOY14GwB61yTO0eaqZ%2FwmDjNFaLj2cjwWlSd4gpTrfnXH2EvdeSkOnu2%2B6cGMubTjTpfOzSBZvqjp7u0hBTnPJg3WhQhCvXDhOQPfiKeCW88WycMY7nTdmwINDhE0Yp5gLV9OJUSRXn1ZfT5hVNZcwtsGyPdVgfglIpZYABH4x4TQ%2F%2BFKbsZbzMMu91wZhGB1EAjSdOsgPs9n6f8S1H1sJWOD2D7D52Nzp4P54xqbhNeZkYQrBW5oj9inJsKH3Ozb9zYQjXVZIAwrNQ%2F7gwxL0zdCF%2FpQlYR8p2Esbotm0r0uGXQANnny6fQ6dMokgA7LYs6TiLyjvEkcF6rGhAtr3yv%2BZH2vA%2B0Bh8xA%2Bh%2F%2BOElk9Q1uWn9L0cSKXAfu5%2BvrMUZKQ4MXzp%2F80Jw8Zb73nit2jlhtCiIsLli%2BkKiLM5ImRpvaNSQ1%2FCWwkAOMLSHo%2FhetPqNCkAVVbr3IcICRoxnxuLWwmofxvN5dSlUGQFFqMJXRr6MGOrABfHgJPkF0qVV79qDNUXNQHKV8P%2F2XxvLFENnPSrisj7cBEIJizqlD6gns1%2BuEZ7metfOHgsqboJe8lAbOJsH5YnWX5Dotcre98olxDokrt6DLGYfGAFtwvLgAfZIawTbChhUBJgQbRQ5MvjIlbfJZwrjYW70DVDqDeie8bj2jJu1c2SCQYOfu%2FTIn%2FiPAHTv8pRr5g6vl1Uk5AFbnj%2BekYaztKZxqz6XboqY4izrnsnQ%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230522T234458Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTYTOWXGH77%2F20230522%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=49f6ef1d9ff0cf9d3f52248ec8ef22f1cc6031c9f750f4361c9c98eb0d396bd9&hash=bd10e725982eaac9d403df4c78c9a0c3c2746fb50a764f025a27704266952454&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S0957417417308333&tid=spdf-2034425c-7791-4a5e-8a61-4217d5f7ccf9&sid=eb80536d747fa9414589b27012810ada0ae9gxrqa&type=client&tsoh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&ua=13105803065605045502&rr=7cb8ee1db84dc6fd&cc=us][The use of machine learning algorithms in recommender systems: A systematic review]]
+  - [ ] [[https://arxiv.org/pdf/2210.16489.pdf][SMPrompt: Semantic-driven Augmented Templates and Multiple Mappings for Effective Prompt Learning]]
 - Other
-  - [[https://towardsdatascience.com/the-exploration-exploitation-dilemma-f5622fbe1e82][exploration-exploitation trade-off]]
-  - [[https://gilgi.org/blog/dota-hero-embedding/][hero embeddings]]
+  - [ ] [[https://towardsdatascience.com/the-exploration-exploitation-dilemma-f5622fbe1e82][exploration-exploitation trade-off]]
+  - [X] [[https://gilgi.org/blog/dota-hero-embedding/][hero embeddings]]
     - word2vec
 
 * Citations
@@ -390,11 +380,11 @@ digraph rnn {
 
 https://ieeexplore.ieee.org/abstract/document/9776822
 
-#+begin_src dot :file sysarch.png :cmdline -Kdot -Tpng -Gsize=15
+#+BEGIN_SRC dot :file sysarch.png :cmdline -Kdot -Tpng -Gsize=15
 digraph sysarch {
   "Open Dota" -> "Match Data" -> "Word2Vec/Gensim" -> "Feature Embeddings" -> "RNN/LSTM" -> "Predictions"
 }
-#+end_src
+#+END_SRC
 
 #+RESULTS:
 [[file:sysarch.png]]
@@ -409,13 +399,27 @@ digraph sysarch {
 :EPRINT:   1806.10130
 :ARCHIVEPREFIX: arXiv
 :PRIMARYCLASS: cs.AI
-:HOWPUBLISHED: \url{https://arxiv.org/abs/1806.10130}
+:HOWPUBLISHED: \url{https://web.cs.ucla.edu/~yzsun/papers/2018_recsys_drafting.pdf}
 :END:
 
 Non-AI-based approach
 
-https://arxiv.org/abs/1806.10130
-
 https://web.cs.ucla.edu/~yzsun/papers/2018_recsys_drafting.pdf
 
+https://arxiv.org/abs/1806.10130
+
 https://github.com/czxttkl/DraftArtist
+
+** Attention Is All You Need
+:PROPERTIES:
+:TITLE:    Attention Is All You Need
+:BTYPE:    misc
+:CUSTOM_ID: vaswani2017attention
+:AUTHOR:   Ashish Vaswani and Noam Shazeer and Niki Parmar and Jakob Uszkoreit and Llion Jones and Aidan N. Gomez and Lukasz Kaiser and Illia Polosukhin
+:YEAR:     2017
+:EPRINT:   1706.03762
+:ARCHIVEPREFIX: arXiv
+:PRIMARYCLASS: cs.CL
+:END:
+
+https://arxiv.org/abs/1706.03762

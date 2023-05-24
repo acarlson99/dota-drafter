@@ -1,0 +1,13 @@
+body {
+    background-color: #313338;
+    color: #b8b6b4;
+}
+a {
+    color: #1768AC;
+}
+table,
+td,
+th {
+    border: 1px solid grey;
+    border-collapse: collapse;
+}

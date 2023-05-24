@@ -23,7 +23,7 @@
 		 :components ("gh-assets" "gh-notes")
 		 )))
 
-(defun build ()
+(defun build-pages ()
   (interactive)
   (org-publish-project "gh-pages" t))
 
