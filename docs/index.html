@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-05-23 Tue 20:29 -->
+<!-- 2023-05-23 Tue 20:47 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Dota Draml</title>
@@ -205,8 +205,8 @@
 <ul>
 <li><a href="#orgbebc946">2.1. recommendation algorithm</a>
 <ul>
-<li><a href="#org667696c">2.1.1. Pros</a></li>
-<li><a href="#org01932a0">2.1.2. Cons</a></li>
+<li><a href="#org59c878e">2.1.1. Pros</a></li>
+<li><a href="#org02ea381">2.1.2. Cons</a></li>
 </ul>
 </li>
 <li><a href="#org50a3d92">2.2. vector analysis</a>
@@ -216,8 +216,8 @@
 <li><a href="#org4914e73">2.2.3. Feature Extraction</a></li>
 <li><a href="#orgbd0ff6b">2.2.4. Links</a></li>
 <li><a href="#org689a9a7">2.2.5. Keywords</a></li>
-<li><a href="#org4f6293f">2.2.6. Pros</a></li>
-<li><a href="#org13f1759">2.2.7. Cons</a></li>
+<li><a href="#org8c5bd30">2.2.6. Pros</a></li>
+<li><a href="#org73fde8f">2.2.7. Cons</a></li>
 </ul>
 </li>
 <li><a href="#org0641a01">2.3. Prompt engineering</a></li>
@@ -228,8 +228,8 @@
 <li><a href="#orgc89bb29">3.1. Negative sampling</a></li>
 <li><a href="#orgf7e7e22">3.2. multi-sampling games</a>
 <ul>
-<li><a href="#orgf88f9b5">3.2.1. Pros</a></li>
-<li><a href="#orge0ac200">3.2.2. Cons</a></li>
+<li><a href="#org521d8a6">3.2.1. Pros</a></li>
+<li><a href="#org57a76a6">3.2.2. Cons</a></li>
 </ul>
 </li>
 </ul>
@@ -291,7 +291,7 @@ The tool should be sensitive to new data and able to refine itself to counter me
 </p>
 
 
-<div id="orge452d04" class="figure">
+<div id="org3c75c0a" class="figure">
 <p><img src="https://i.imgur.com/iDZpxsX.png" alt="iDZpxsX.png">
 </p>
 </div>
@@ -402,8 +402,8 @@ Given choices X and Y and Z what is the best next choice
 </p>
 </div>
 
-<div id="outline-container-org667696c" class="outline-4">
-<h4 id="org667696c"><span class="section-number-4">2.1.1.</span> Pros</h4>
+<div id="outline-container-org59c878e" class="outline-4">
+<h4 id="org59c878e"><span class="section-number-4">2.1.1.</span> Pros</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 This is a mature algorithm with investment from Netflix and Amazon.  Surely there are good papers and resources on this
@@ -411,8 +411,8 @@ This is a mature algorithm with investment from Netflix and Amazon.  Surely ther
 </div>
 </div>
 
-<div id="outline-container-org01932a0" class="outline-4">
-<h4 id="org01932a0"><span class="section-number-4">2.1.2.</span> Cons</h4>
+<div id="outline-container-org02ea381" class="outline-4">
+<h4 id="org02ea381"><span class="section-number-4">2.1.2.</span> Cons</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 Most rec. algorithms are geared towards like-things (TV shows, products, books, music) while our algorithm should recommend a diverse set of heroes.
@@ -523,7 +523,7 @@ Something to keep in mind is pick order and role.  Usually supports pick first, 
 </p>
 
 
-<div id="org06e9ca4" class="figure">
+<div id="org83c35b0" class="figure">
 <p><img src="cbow.png" alt="cbow.png">
 </p>
 </div>
@@ -565,8 +565,8 @@ Word2Vec, CBOW (continuous bag of words), skip-gram, RNN (recurrent neural netwo
 </div>
 </div>
 
-<div id="outline-container-org4f6293f" class="outline-4">
-<h4 id="org4f6293f"><span class="section-number-4">2.2.6.</span> Pros</h4>
+<div id="outline-container-org8c5bd30" class="outline-4">
+<h4 id="org8c5bd30"><span class="section-number-4">2.2.6.</span> Pros</h4>
 <div class="outline-text-4" id="text-2-2-6">
 <p>
 Easily represents relations between heroes/items.  This is likely a useful way to represent data regardless of training method.
@@ -578,8 +578,8 @@ Easy, similar to current LLM techniques.
 </div>
 </div>
 
-<div id="outline-container-org13f1759" class="outline-4">
-<h4 id="org13f1759"><span class="section-number-4">2.2.7.</span> Cons</h4>
+<div id="outline-container-org73fde8f" class="outline-4">
+<h4 id="org73fde8f"><span class="section-number-4">2.2.7.</span> Cons</h4>
 <div class="outline-text-4" id="text-2-2-7">
 <p>
 This is hard.  A hero is more than the sum of its skills.
@@ -691,8 +691,8 @@ Each game can be sampled multiple times (every ~5min) to gather data of many gam
 </ul>
 </div>
 
-<div id="outline-container-orgf88f9b5" class="outline-4">
-<h4 id="orgf88f9b5"><span class="section-number-4">3.2.1.</span> Pros</h4>
+<div id="outline-container-org521d8a6" class="outline-4">
+<h4 id="org521d8a6"><span class="section-number-4">3.2.1.</span> Pros</h4>
 <div class="outline-text-4" id="text-3-2-1">
 <p>
 Generates lots of training data
@@ -700,8 +700,8 @@ Generates lots of training data
 </div>
 </div>
 
-<div id="outline-container-orge0ac200" class="outline-4">
-<h4 id="orge0ac200"><span class="section-number-4">3.2.2.</span> Cons</h4>
+<div id="outline-container-org57a76a6" class="outline-4">
+<h4 id="org57a76a6"><span class="section-number-4">3.2.2.</span> Cons</h4>
 <div class="outline-text-4" id="text-3-2-2">
 <p>
 This could bias long games
@@ -786,7 +786,7 @@ Outputs are heroes assigned to their predicted roles.
 </p>
 
 
-<div id="org716c5e4" class="figure">
+<div id="org143e76e" class="figure">
 <p><img src="draftPredictor.png" alt="draftPredictor.png">
 </p>
 </div>
@@ -805,7 +805,7 @@ Outputs are percentages for each hero+position.  How good is axe pos 1 or batrid
 </p>
 
 
-<div id="orgbdc49b6" class="figure">
+<div id="org0b844df" class="figure">
 <p><img src="nextPick.png" alt="nextPick.png">
 </p>
 </div>
@@ -833,7 +833,7 @@ LLMs are only able to learn a few time steps in the past[<a href="#9776822">1</a
 
 
 
-<div id="org6cf2253" class="figure">
+<div id="org075e4d3" class="figure">
 <p><img src="rnn.png" alt="rnn.png">
 </p>
 </div>
@@ -857,6 +857,7 @@ LLMs are only able to learn a few time steps in the past[<a href="#9776822">1</a
 </ul></li>
 <li>Other
 <ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> <a href="https://www.researchgate.net/publication/278678569_Games_Research_Today_Analyzing_the_Academic_Landscape_2000-2014">https://www.researchgate.net/publication/278678569_Games_Research_Today_Analyzing_the_Academic_Landscape_2000-2014</a></li>
 <li class="off"><code>[&#xa0;]</code> <a href="https://towardsdatascience.com/the-exploration-exploitation-dilemma-f5622fbe1e82">exploration-exploitation trade-off</a></li>
 <li class="on"><code>[X]</code> <a href="https://gilgi.org/blog/dota-hero-embedding/">hero embeddings</a>
 <ul class="org-ul">
@@ -879,7 +880,7 @@ LLMs are only able to learn a few time steps in the past[<a href="#9776822">1</a
 </p>
 
 
-<div id="org3a84997" class="figure">
+<div id="orgc94d69e" class="figure">
 <p><img src="sysarch.png" alt="sysarch.png">
 </p>
 </div>
@@ -918,7 +919,7 @@ Non-AI-based approach
 </div>
 </div>
 <div id="postamble" class="status">
-<p><a href='https://github.com/acarlson99'><img src='github.png'></a></p><p class='author'>Author: acarlson<p><p class='date'>Last Updated: 2023-05-23 Tue 20:29</p><p class='creator'>Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6)</p>
+<p class='author'>Author: acarlson</p><p class='date'>Last Updated: 2023-05-23 Tue 20:47</p><p class='creator'>Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.0.50 (<a href="https://orgmode.org">Org</a> mode 9.6.6)</p><p><a href='https://github.com/acarlson99'><img src='github.png'></a></p>
 </div>
 </body>
 </html>
