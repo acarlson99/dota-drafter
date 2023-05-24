@@ -165,7 +165,9 @@ The problem with the CBOW approach is that it will ONLY predict the most commonl
 
 ** Prompt engineering
 
-Encode -> generate prompt (few-shot?) based on hero/item encodings -> GPT -> profit??
+Encode → generate prompt (few-shot?) based on hero/item encodings → GPT → profit??
+
+https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/
 
 * data tricks
 
