@@ -5,6 +5,8 @@
 (defvar proj-dir (file-name-directory (buffer-file-name)))
 
 (require 'subr-x)
+(require 'org-loaddefs)
+
 (setq org-publish-project-alist
 	  `(("gh-notes"
 		 :base-directory ,proj-dir
@@ -21,5 +23,9 @@
 		 :components ("gh-assets" "gh-notes")
 		 )))
 
-(require 'org-loaddefs)
-(org-publish-project "gh-pages" t)
+(defun build ()
+  (interactive)
+  (org-publish-project "gh-pages" t))
+
+(provide 'build)
+;;; build.el ends here

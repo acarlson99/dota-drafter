@@ -75,13 +75,13 @@ Likely this would involve creating a "dictionary" of [[https://en.wikipedia.org/
 
 *** Feature Extraction
 
-Lame, boring, outdated; see [[[*Prompt engineering][prompt engineering]]]
+Lame, boring, outdated; see [[*Prompt engineering][prompt engineering]]
 
 *** Links
 
 Relevant blog post https://gilgi.org/blog/dota-hero-embedding/
 
-[[[*Defense of the Ancients DOTA 2 Draft Recommendation System][1]]]
+[[[#9776822][1]]]
 
 *** Keywords
 
@@ -161,7 +161,6 @@ NOTE: this visualization does not incorperate bans, but could easily be modified
 
 *** Links
 
-[[[*Defense of the Ancients DOTA 2 Draft Recommendation System][1]]]
 
 *** Keywords
 
@@ -183,7 +182,8 @@ Encode -> generate prompt (few-shot?) based on hero/item encodings -> GPT -> pro
 
 ** Negative sampling
 
-This can be used to select 2-20[[[*Defense of the Ancients DOTA 2 Draft Recommendation System][1]]] heroes to use as a negative example to expand our data pool.  The smaller our data pool the more heroes we should select.
+This can be used to select 2-20[[[#9776822][1]]] heroes to use as a negative example to expand our data pool.  The smaller our data pool the more heroes we should select.
+
 
 ** multi-sampling games
 
@@ -343,7 +343,8 @@ The recurrent parameter H_t is recurrent
 
 The output Y_t is a vector that should be near the best hero choice
 
-LLMs are only able to learn a few time steps in the past[[[*Defense of the Ancients DOTA 2 Draft Recommendation System][1]]] due to the multiplicative nature of the recurrent edge update.  This means that LSTMs are the preferred method.
+LLMs are only able to learn a few time steps in the past[[[#9776822][1]]] due to the multiplicative nature of the recurrent edge update.  This means that LSTMs are the preferred method.
+
 
 #+begin_src dot :file rnn.png :cmdline -Kdot -Tpng -Gsize=15
 digraph rnn {
@@ -368,14 +369,26 @@ digraph rnn {
   - [[https://arxiv.org/pdf/2210.16489.pdf][SMPrompt: Semantic-driven Augmented Templates and Multiple Mappings for Effective Prompt Learning]]
 - Other
   - [[https://towardsdatascience.com/the-exploration-exploitation-dilemma-f5622fbe1e82][exploration-exploitation trade-off]]
+  - [[https://gilgi.org/blog/dota-hero-embedding/][hero embeddings]]
+    - word2vec
 
 * Citations
 
-** Defense of the Ancients DOTA 2 Draft Recommendation System
+** Defense of the Ancients (DOTA 2)-Draft Recommendation System
+:PROPERTIES:
+:TITLE:    Defense of the Ancients (DOTA 2)-Draft Recommendation System
+:BTYPE:    inproceedings
+:CUSTOM_ID: 9776822
+:AUTHOR:   Mohammed, Yassar and Srinivasan, Samundiswary and Iyer, Siddhesh and Nagarajan, Ameyassh
+:BOOKTITLE: 2022 6th International Conference on Trends in Electronics and Informatics (ICOEI)
+:YEAR:     2022
+:VOLUME:
+:NUMBER:
+:PAGES:    13-17
+:DOI:      10.1109/ICOEI53556.2022.9776822
+:END:
 
 https://ieeexplore.ieee.org/abstract/document/9776822
-
-Y. Mohammed, S. Srinivasan, S. Iyer and A. Nagarajan, "Defense of the Ancients (DOTA 2)-Draft Recommendation System," 2022 6th International Conference on Trends in Electronics and Informatics (ICOEI), Tirunelveli, India, 2022, pp. 13-17, doi: 10.1109/ICOEI53556.2022.9776822.
 
 #+begin_src dot :file sysarch.png :cmdline -Kdot -Tpng -Gsize=15
 digraph sysarch {
@@ -385,3 +398,24 @@ digraph sysarch {
 
 #+RESULTS:
 [[file:sysarch.png]]
+
+** The Art of Drafting: A Team-Oriented Hero Recommendation System for Multiplayer Online Battle Arena Games
+:PROPERTIES:
+:TITLE:    The Art of Drafting: A Team-Oriented Hero Recommendation System for Multiplayer Online Battle Arena Games
+:BTYPE:    misc
+:CUSTOM_ID: chen2018art
+:AUTHOR:   Zhengxing Chen and Truong-Huy D Nguyen and Yuyu Xu and Chris Amato and Seth Cooper and Yizhou Sun and Magy Seif El-Nasr
+:YEAR:     2018
+:EPRINT:   1806.10130
+:ARCHIVEPREFIX: arXiv
+:PRIMARYCLASS: cs.AI
+:HOWPUBLISHED: \url{https://arxiv.org/abs/1806.10130}
+:END:
+
+Non-AI-based approach
+
+https://arxiv.org/abs/1806.10130
+
+https://web.cs.ucla.edu/~yzsun/papers/2018_recsys_drafting.pdf
+
+https://github.com/czxttkl/DraftArtist
