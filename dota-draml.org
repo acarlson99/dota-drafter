@@ -75,6 +75,8 @@ A popular Python library for creating vector space embeddings commonly used in N
 
 Likely this would involve creating a "dictionary" of [[https://en.wikipedia.org/wiki/One-hot][one-hot encoded]] dota heroes and training on many "sentences" (dota drafts)
 
+[[*{Software Framework for Topic Modelling with Large Corpora}][gensim]]
+
 *** CBOW
 
 This could be done by filling in heroes and asking a model "what hero is in this position"
@@ -168,6 +170,12 @@ The problem with the CBOW approach is that it will ONLY predict the most commonl
 Encode → generate prompt (few-shot?) based on hero/item encodings → GPT → profit??
 
 https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/
+
+** Non-AI
+
+contest rate, hero counters, all data-driven
+
+basically string-diff
 
 * data tricks
 
@@ -363,6 +371,7 @@ digraph rnn {
   - [ ] [[https://towardsdatascience.com/the-exploration-exploitation-dilemma-f5622fbe1e82][exploration-exploitation trade-off]]
   - [X] [[https://gilgi.org/blog/dota-hero-embedding/][hero embeddings]]
     - word2vec
+  - https://machinelearningmastery.com/models-sequence-prediction-recurrent-neural-networks/
 
 * Citations
 
@@ -425,3 +434,33 @@ https://github.com/czxttkl/DraftArtist
 :END:
 
 https://arxiv.org/abs/1706.03762
+
+** {Software Framework for Topic Modelling with Large Corpora}
+:PROPERTIES:
+:TITLE:    {Software Framework for Topic Modelling with Large Corpora}
+:BTYPE:    inproceedings
+:CUSTOM_ID: rehurek_lrec
+:AUTHOR:   Radim {\v R}eh{\r u}{\v r}ek and Petr Sojka
+:BOOKTITLE: {Proceedings of the LREC 2010 Workshop on New Challenges for NLP Frameworks}
+:PAGES:    45--50
+:YEAR:     2010
+:MONTH:    May
+:DAY:      22
+:PUBLISHER: ELRA
+:ADDRESS:  Valletta, Malta
+:LANGUAGE: English
+:END:
+
+https://pypi.org/project/gensim/
+
+** {CERT}: Continual Pre-training on Sketches for Library-oriented Code Generation
+:PROPERTIES:
+:TITLE:    {CERT}: Continual Pre-training on Sketches for Library-oriented Code Generation
+:BTYPE:    inproceedings
+:CUSTOM_ID: CERT
+:AUTHOR:   Zan, Daoguang and Chen, Bei and Yang, Dejian and Lin, Zeqi and Kim, Minsu and Guan, Bei and Wang, Yongji and Chen, Weizhu and Lou, Jian-Guang
+:BOOKTITLE: The 2022 International Joint Conference on Artificial Intelligence
+:YEAR:     2022
+:END:
+
+https://github.com/microsoft/PyCodeGPT
